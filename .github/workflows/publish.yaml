@@ -57,9 +57,9 @@ jobs:
           sed -i \
             -e 's/name = "polaris"/name = "redpanda-polaris-catalog-python"/' \
             -e 's/boto3==/boto3>=/' pyproject.toml
-          - name: Extract Poetry version from pyproject.toml using yq
 
-      - id: get_poetry_version
+      - name: Extract Poetry version from pyproject.toml using yq
+        id: get_poetry_version
         working-directory: client/python
         run: |
           # Use yq to parse the TOML and extract the value of tool.poetry.requires-poetry
