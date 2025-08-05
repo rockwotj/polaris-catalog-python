@@ -65,34 +65,12 @@ jobs:
             -e 's/"polaris\/\*\*"/"polaris\/\*\*\/\*\.py"/' \
             -e 's/boto3==/boto3>=/' pyproject.toml
 
-      - name: Extract Poetry version from pyproject.toml using yq
-        id: get_poetry_version
-        working-directory: client/python
-        run: |
-          # Use yq to parse the TOML and extract the value of tool.poetry.requires-poetry
-          # The 'tag' is optional but helps with strict parsing.
-          POETRY_VERSION=$(yq '.tool.poetry."requires-poetry" | match("==?([^ ]+)").captures[0].string' pyproject.toml)
-          echo "Extracted Poetry version: $POETRY_VERSION"
-          echo "poetry_version=$POETRY_VERSION" >> $GITHUB_OUTPUT # Store as an output
-
-      - name: Install Poetry
-        working-directory: client/python
-        run: |
-          pip install poetry==${{ steps.get_poetry_version.outputs.poetry_version }}
-          poetry --version
-
-      - name: Configure Poetry for GitHub Actions
-        working-directory: client/python
-        run: |
-          poetry config virtualenvs.in-project true
-
-      - name: Install dependencies
-        working-directory: client/python
-        run: poetry install --no-root
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
 
       - name: Build distribution packages
         working-directory: client/python
-        run: poetry build
+        run: uv build
         
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
