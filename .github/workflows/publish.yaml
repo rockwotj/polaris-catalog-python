@@ -55,7 +55,7 @@ jobs:
         run: |
           sed -i \
             -e 's/name = "polaris"/name = "redpanda-polaris-catalog-python"/' \
-            -e 's/version = "1.0.0"/version = "1.0.0.post2"/' \
+            -e 's/version = "1.0.0"/version = "1.0.0.post3"/' \
             -e 's/"polaris\/\*\*"/"polaris\/\*\*\/\*\.py"/' \
             -e 's/boto3==/boto3>=/' pyproject.toml
 
